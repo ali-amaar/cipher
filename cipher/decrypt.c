@@ -50,7 +50,7 @@ void DecryptionWithKey(int fileSize, unsigned char* charBuffer)
 
 	for (characters = 0; characters < fileSize-1 ; characters++) //iterating through file
 	{
-		if (charBuffer[characters] == 99 && charBuffer[characters] != '\0' ) //if key = 99
+		if (charBuffer[characters] == 98 && charBuffer[characters] != '\0' ) //if key = 99
 		{
 			key = KeylessDecryption(fileSize, charBuffer); //calling function
 			printf("Key:%d\nMessage: ", key);  //print key value
@@ -68,12 +68,16 @@ void DecryptionWithKey(int fileSize, unsigned char* charBuffer)
 
 				charBuffer[characters] = charBuffer[characters] +26; //stay between A and Z
 			}
-			if(charBuffer[characters] -(key) == '+'){
-				charBuffer[characters] = charBuffer[characters] - 11;
+			char k = charBuffer[characters] -(key);
+			if(k < 65){
+				k = 32;
 			}
-			printf("%c", charBuffer[characters] -(key)); //decrypted character print
+			if(k == 44){
+				k = 44;
+			}
+			printf("%c", k); //decrypted character print
 		}
-		else if (charBuffer[characters] == '\0') //new line for next message or end
+		else if (charBuffer[characters] == '\00') //new line for next message or end
 		{
 			printf("\n");
 		}
