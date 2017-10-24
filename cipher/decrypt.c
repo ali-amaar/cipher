@@ -5,7 +5,45 @@
 int characters; //globar variable characters
 int key; //global variable key
 
+int KeylessDecryption(int fileSize, unsigned char* charBuffer)
+{// start KeylessDecription
 
+	int charactercount = 0;
+	int mode;
+	int modecount = 0;
+	int possiblemode = 'A';
+	int keys;
+	int characterposition = characters;
+
+	for ( keys = 1; keys <=  25; keys++) //iterating through possible keys
+	{
+		while (charBuffer[characterposition ] != '\0') //while valid character
+		{
+			if (charBuffer[characterposition ] == possiblemode) //matching characters
+			{
+				modecount++; 	//iterate mode count
+			}
+			characterposition ++; //move on to next letter
+		}
+		if (modecount > charactercount) //if mode is found
+		{
+			charactercount = modecount; //mode is highest occuring character
+			mode = possiblemode;
+		}
+		possiblemode++; //next character
+		modecount = 0; //reset counter for next character
+		characterposition = characters;
+	}
+	if ( mode < 'E' )
+	{
+		key = mode - 'E' + 26;
+	}
+	else
+	{
+		key = mode - 'E';
+	}
+	return key;
+}//end KeylessDecription
 
 void DecryptionWithKey(int fileSize, unsigned char* charBuffer)
 {//start DecryptionWithKey
@@ -24,9 +62,14 @@ void DecryptionWithKey(int fileSize, unsigned char* charBuffer)
 		}
 		else if (isprint(charBuffer[characters])) //printable characters
 		{
+
 			if (charBuffer[characters] - key < 'A') //if key subtraction goes past A ie 65
 			{
+
 				charBuffer[characters] = charBuffer[characters] +26; //stay between A and Z
+			}
+			if(charBuffer[characters] -(key) == '+'){
+				charBuffer[characters] = charBuffer[characters] - 11;
 			}
 			printf("%c", charBuffer[characters] -(key)); //decrypted character print
 		}
